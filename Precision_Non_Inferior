@@ -33,11 +33,12 @@ input <- ""
 # output file
 output <- ""
 
+# names of input files folders in .xlsx format
 list_data <- c(
-  "Jeremy2Ben_160_th_no",
-  "B_160_th_no",
-  "Abdel2Ben_160_th_no",
-  "C_160_th_no"
+  "interexpert_B",
+  "modelexpert_B",
+  "interexpert_C",
+  "modelexpert_C"
 )
 
 columnnames <- c(
@@ -148,9 +149,11 @@ df_wilcox <- data.frame(row.names=metricnames)
 
 for (i in 1:length(metricnames)){
   
-  temp <- wilcox(Jeremy2Ben_160_th_no,B_160_th_no, 
-                 Abdel2Ben_160_th_no,C_160_th_no,
-                 i)
+  temp <- wilcox(interexpert_B,
+                modelexpert_B,
+                interexpert_C,
+                modelexpert_C,
+                i)
   
   df_wilcox <- round(rbind(df_wilcox, assign(paste0(metricnames[i]), temp)), digits=2)
   rm(temp)
