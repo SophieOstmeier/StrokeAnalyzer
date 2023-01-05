@@ -30,7 +30,7 @@ library(onewaytests)
 # variables, names
 # input folders
 input <- ""
-# output folders
+# output file in .tex
 output <- ""
 
 # names of input files folders in .xlsx format
@@ -164,8 +164,10 @@ for (i in 1:length(metricnames)){
     mu <-  mu_SI_distance
     test <- test_SI 
   }
-  temp <- wilcox(Jeremy2Ben_160_th_no,B_160_th_no, 
-                 Abdel2Ben_160_th_no,C_160_th_no,
+  temp <- wilcox(interexpert_B,
+                 modelexpert_B,
+                 interexpert_C,
+                 modelexpert_C,
                  i, mu, test)
   
   df_wilcox <- rbind(df_wilcox, assign(paste0(metricnames[i]), temp))
