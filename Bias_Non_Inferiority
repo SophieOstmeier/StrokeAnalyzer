@@ -28,14 +28,17 @@ library(glue)
 library(onewaytests)
 
 # variables, names
-input <- "/Users/sophieostmeier/Desktop/Publications/NCCT_paper_DL/configurations_160_th_no"
-output <- "/Users/sophieostmeier/Desktop/Publications/NCCT_paper_DL/Results/results_th_no_160_pres.tex"
+# input folders
+input <- ""
+# output folders
+output <- ""
 
+# names of input files folders in .xlsx format
 list_data <- c(
-  "Jeremy2Ben_160_th_no",
-  "B_160_th_no",
-  "Abdel2Ben_160_th_no",
-  "C_160_th_no"
+  "interexpert_B",
+  "modelexpert_B",
+  "interexpert_C",
+  "modelexpert_C"
 )
 
 columnnames <- c(
@@ -123,7 +126,7 @@ for (a in 1:length(list_data)){
   setwd(input)
   
   # create segmentation taskps= 1000, test, mups= 1000, test, mups= 1000, test, mu
-  segmentation_data <- read_excel(glue("summary_{list_data[a]}.xlsx"), sheet = "all")
+  segmentation_data <- read_excel(glue("{list_data[a]}.xlsx"), sheet = "all")
   
   # median
   segmentation_needed <- select(segmentation_data, metric_segmentation)
