@@ -30,7 +30,7 @@ library(onewaytests)
 # variables, names
 # input folder with data in xlsx format
 input <- ""
-# output file
+# output file in .tex
 output <- ""
 
 # names of input files folders in .xlsx format
@@ -133,7 +133,7 @@ for (a in 1:length(list_data)){
   setwd(input)
   
   # create segmentation taskps= 1000, test, mups= 1000, test, mups= 1000, test, mu
-  segmentation_data <- read_excel(glue("summary_{list_data[a]}.xlsx"), sheet = "all")
+  segmentation_data <- read_excel(glue("{list_data[a]}.xlsx"), sheet = "all")
   
   # data
   segmentation_needed <- select(segmentation_data, metric_segmentation)
