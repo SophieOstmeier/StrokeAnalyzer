@@ -1,6 +1,6 @@
 # StrokeAnalyzer
 
-Code base for statistical analysis of "Non-inferiority of Deep Learning Acute Ischemic Stroke Segmentation on Non-Contrast CT Compared to Expert Neuroradiologists"
+Code base for statistical analysis of "Non-inferiority of Deep Learning Acute Ischemic Stroke Segmentation on Non-Contrast CT Compared to Expert Neuroradiologists" https://arxiv.org/abs/2211.15341
 
 Submitted to Radiology Artificial Intelligence
 
