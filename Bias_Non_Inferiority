@@ -12,6 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+install.packages(c("readxl", "dplyr", "ggpubr","gt", "tidyverse", "writexl", 
+                    "gtExtras", "xtable", "boot", "rstatix","glue"))
+
 # non-inferior analyses
 rm(list=ls())
 library(readxl)
@@ -25,13 +28,12 @@ library(xtable)
 library(boot)
 library(rstatix)
 library(glue)
-library(onewaytests)
 
 # variables, names
-# input folders
-input <- ""
-# output file in .tex
-output <- ""
+# full path to input folder name (...) with data in xlsx format
+input <- "..."
+# full path to output file (...) in .tex
+output <- "..."
 
 # names of input files folders in .xlsx format
 list_data <- c(
@@ -68,6 +70,7 @@ metricnames_categories <- c(
   "Distance"," "
 )
 
+# list of metrices you would like to include, they have to match the column name where the values for one metric is stored
 metric_segmentation <- c(
   "('1', 'Volumetric Similarity')","('1', 'Volume Absolute Difference')",
   "('1', 'Dice')","('1', 'Precision')","('1', 'Recall')",
@@ -75,9 +78,6 @@ metric_segmentation <- c(
   "('1', 'Surface Dice Variable 5')")
 
 set.seed(12345)
-
-######################
-# test variations
 
 # boundary (or effect size) for metrics with from 0 to 1
 mu_0to1 <- -0.1
@@ -196,7 +196,7 @@ for (i in colnames(results[ , grepl('p-value' , names(results))])){
 title <- glue("One Sided")
 subtitle <- glue("Boundary for relative metrics: {mu_0to1}, for volume metrics: {mu_SI_volume} and for distance metrics: {mu_SI_distance}")
 
-# view table
+# view table in RStudio
 results %>%
   gt() %>%
   tab_header(
@@ -205,7 +205,7 @@ results %>%
   ) %>%
   gt_theme_espn()
 
-# save
+# saves tables as latex table
 print(xtable(results, type = "latex"), 
       file = output, 
       include.rownames=FALSE
