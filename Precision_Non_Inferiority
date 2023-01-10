@@ -12,7 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-# non-inferior analyses
+# install all packages if necessary
+install.packages(c("readxl", "dplyr", "ggpubr","gt", "tidyverse", "writexl", 
+                    "gtExtras", "xtable", "boot", "rstatix","glue","onewaytests"))
+
+# packages
 rm(list=ls())
 library(readxl)
 library(dplyr)
@@ -28,12 +32,12 @@ library(glue)
 library(onewaytests)
 
 # variables, names
-# input folder with data in xlsx format
-input <- ""
-# output file in .tex
-output <- ""
+# full path to input folder name (...) with data in xlsx format
+input <- "..."
+# full path to output file (...) in .tex
+output <- "..."
 
-# names of input files folders in .xlsx format
+# names of input files in .xlsx format
 list_data <- c(
   "interexpert_B",
   "modelexpert_B",
@@ -72,6 +76,7 @@ metricnames_categories <- c(
   "Distance"," "
 )
 
+# list of metrices you would like to include, they have to match the column name where the values for one metric is stored
 metric_segmentation <- c(
   "('1', 'Volumetric Similarity')","('1', 'Volume Absolute Difference')",
   "('1', 'Dice')","('1', 'Precision')","('1', 'Recall')",
@@ -80,12 +85,8 @@ metric_segmentation <- c(
 
 set.seed(12345)
 
-######################
-# test variations
-
-######################
 # functions
-
+# function for precision analysis
 precision <- function(group1, group2, reps=1000) {
   results <- sapply(1:reps, function(r) {
     list <- sample(1:length(group1), size= length(group1), replace= TRUE)
@@ -110,7 +111,8 @@ precision <- function(group1, group2, reps=1000) {
   data.frame(cbind(var(group2, na.rm = TRUE), var(group1, na.rm = TRUE), var_ratio, sd*1.96, pnorm(var_ratio,1.1,sd,lower.tail = TRUE)))
 }
 
-wilcox <- function(dataBA, dataBM, dataCA, dataCM, indices){
+
+loop <- function(dataBA, dataBM, dataCA, dataCM, indices){
   BA <-dataBA[,indices]
   BModel <-dataBM[,indices]
   CA <-dataCA[,indices]
@@ -149,17 +151,17 @@ df_wilcox <- data.frame(row.names=metricnames)
 
 for (i in 1:length(metricnames)){
   
-  temp <- wilcox(interexpert_B,
+  temp <- loop(interexpert_B,
                 modelexpert_B,
                 interexpert_C,
                 modelexpert_C,
                 i)
   
-  df_wilcox <- round(rbind(df_wilcox, assign(paste0(metricnames[i]), temp)), digits=2)
+  df_loop <- round(rbind(df_wilcox, assign(paste0(metricnames[i]), temp)), digits=2)
   rm(temp)
 }
 
-results <- cbind(metricnames_categories,metricnames,df_wilcox)
+results <- cbind(metricnames_categories,metricnames,df_loop)
 
 colnames(results) <- columnnames
 for (b in colnames(results[ , grepl('CI' , names(results))])){
@@ -173,12 +175,12 @@ for (i in colnames(results[ , grepl('p-value' , names(results))])){
                           symbols = c("p<0.0001","p<0.001", "p<0.01", "p<0.05", "non-sig"))
 }
 
-# view table
+# view table in RStudio
 results %>%
   gt() %>%
   gt_theme_espn()
 
-# save
+# saves tables as latex table
 print(xtable(results, type = "latex"), 
       file = output, 
       include.rownames=FALSE
