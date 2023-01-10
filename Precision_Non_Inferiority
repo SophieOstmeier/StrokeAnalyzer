@@ -14,7 +14,7 @@ limitations under the License.
 
 # install all packages if necessary
 install.packages(c("readxl", "dplyr", "ggpubr","gt", "tidyverse", "writexl", 
-                    "gtExtras", "xtable", "boot", "rstatix","glue","onewaytests"))
+                    "gtExtras", "xtable", "boot", "rstatix","glue"))
 
 # packages
 rm(list=ls())
@@ -29,7 +29,6 @@ library(xtable)
 library(boot)
 library(rstatix)
 library(glue)
-library(onewaytests)
 
 # variables, names
 # full path to input folder name (...) with data in xlsx format
